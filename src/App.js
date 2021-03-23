@@ -11,24 +11,27 @@ const App = (props)=>{
     setCsvData(result)
   }
   
-  const handleUpload = () =>{
-    console.log(csvData)
-    Papa.parse(csvData,{
-      header : true,
-      skipEmptyLines : true,
-      complete : (result) =>{
-        console.log(result)
-        setData(result.data)
-      }
-    })
+  const handleUpload = (e) =>{
+    if( document.getElementById("csvFile").files.length == 0 ){
+      alert('No file Selected')
+  } else {
+      Papa.parse(csvData,{
+        header : true,
+        skipEmptyLines : true,
+        complete : (result) =>{
+          console.log(result)
+          setData(result.data)
+        }
+      })
+    } 
   }
+
   return(
-    <div>
+    <div className="container">
       <h2>File Upload + CSV Parser</h2>
-        <input type="file" onChange = {handleFileChange} name="file" />
-        <button type="submit" onClick={handleUpload}>Upload</button><br/>
-        {data.length > 0 && <Report data={data}/>}
-        
+      <input type="file" id="csvFile" onChange = {handleFileChange} name="file" />
+      <button type="submit" className="btn btn-primary" onClick={handleUpload}>Upload</button>
+      {data.length > 0 && <Report data={data}/>}
     </div>
   )
 }
